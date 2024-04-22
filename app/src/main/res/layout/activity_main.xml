@@ -29,6 +29,7 @@
             android:layout_height="30dp"
             android:layout_marginStart="25dp"
             android:background="@drawable/button_style"
+            android:onClick="addNewPost"
             android:src="@drawable/plus" />
 
     </Toolbar>

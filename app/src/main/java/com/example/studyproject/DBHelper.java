@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -22,7 +23,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + POSTS + " (" + ID + " integer, " + TITLE + " text, " + TEXT + " text);");
+        db.execSQL("CREATE TABLE " + POSTS + " (" + ID + " text primary key, " + TITLE + " text, " + TEXT + " text);");
     }
 
     @Override
@@ -54,7 +55,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 int id_title = cursor.getColumnIndex(TITLE);
                 int id_text = cursor.getColumnIndex(TEXT);
 
-                Post post = new Post(cursor.getInt(id_id), cursor.getString(id_title), cursor.getString(id_text));
+                Post post = new Post(cursor.getString(id_id), cursor.getString(id_title), cursor.getString(id_text));
                 list.add(post);
 
             } while (cursor.moveToNext());
