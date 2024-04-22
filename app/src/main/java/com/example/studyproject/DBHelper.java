@@ -9,11 +9,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String POSTS = "posts";
-    private static final String ID = "id";
+    private static final String ID = "_id";
     private static final String TITLE = "title";
     private static final String TEXT = "text";
 
@@ -68,6 +69,22 @@ public class DBHelper extends SQLiteOpenHelper {
     public void DeleteAll(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(POSTS, null, null);
+        db.close();
+    }
+
+    public void DeleteOnePost(Post post){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(POSTS,   ID + "='" + post.id + "'", null);
+        db.close();
+    }
+
+    public void UpdateOnePost(Post post){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(ID , post.id);
+        cv.put(TITLE , post.title);
+        cv.put(TEXT , post.text);
+        db.update(POSTS, cv, ID + "='" + post.id + "'", null);
         db.close();
     }
 

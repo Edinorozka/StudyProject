@@ -7,9 +7,9 @@
     android:background="#ffffff">
 
     <TextView
+        android:id="@+id/ToolbarTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/create_post"
         android:textColor="#673AB7"
         android:textSize="24sp"
         android:textStyle="normal" />

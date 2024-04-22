@@ -18,7 +18,7 @@
             android:layout_height="30dp"
             android:layout_gravity="left"
             android:background="@drawable/button_style"
-            android:elevation="10dp"
+            android:elevation="30dp"
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             style="@style/WhiteTextInSearchView"/>
@@ -30,7 +30,8 @@
             android:layout_marginStart="25dp"
             android:background="@drawable/button_style"
             android:onClick="addNewPost"
-            android:src="@drawable/plus" />
+            android:src="@drawable/plus"
+            android:elevation="30dp"/>
 
     </Toolbar>
 

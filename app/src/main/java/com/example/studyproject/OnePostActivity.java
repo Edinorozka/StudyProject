@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -15,17 +14,24 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import org.jetbrains.annotations.NotNull;
+public class OnePostActivity extends AppCompatActivity {
 
-import java.util.UUID;
+    Intent intent;
+    Post post;
 
-public class CreatePost extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_post);
+        setContentView(R.layout.activity_one_post);
+
+        intent = getIntent();
+        post = (Post) intent.getSerializableExtra("OnePost");
+
+
         TextView textView = findViewById(R.id.ToolbarTitle);
-        textView.setText("Создание поста");
+        textView.setText(post.title);
+        TextView textView1 = findViewById(R.id.PostText);
+        textView1.setText(post.text);
 
         Toolbar toolbar = findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
@@ -34,21 +40,21 @@ public class CreatePost extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         this.finish();
         return super.onOptionsItemSelected(item);
     }
 
-    public void AddPost(View view) {
-        EditText title = findViewById(R.id.PostTitle);
-        EditText text = findViewById(R.id.PostText);
-        if (!title.getText().toString().isEmpty() && !text.getText().toString().isEmpty()){
-            Post post = new Post(UUID.randomUUID().toString(), title.getText().toString(), text.getText().toString());
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("post", post);
-            startActivity(intent);
-        }
+    public void DeleteClick(View view) {
+        intent = new Intent(this, MainActivity.class);
+        intent.putExtra("delete", post);
+        startActivity(intent);
+    }
+
+    public void ChangeClick(View view) {
+        intent = new Intent(this, MainActivity.class);
+        intent.putExtra("update", post);
+        startActivity(intent);
     }
 }
