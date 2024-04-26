@@ -24,12 +24,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + POSTS + " (" + ID + " text primary key, " + TITLE + " text, " + TEXT + " text);");
+        db.execSQL("CREATE TABLE if not exists " + POSTS + " (" + ID + " text primary key, " + TITLE + " text, " + TEXT + " text);");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
     }
 
     public void addPost(Post post){

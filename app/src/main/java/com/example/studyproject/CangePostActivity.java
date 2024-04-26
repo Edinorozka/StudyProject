@@ -14,23 +14,25 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class OnePostActivity extends AppCompatActivity {
-
+public class CangePostActivity extends AppCompatActivity {
     Intent intent;
     Post post;
+    TextView textView1, textView2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_one_post);
+        setContentView(R.layout.activity_cange_post);
+        TextView textView = findViewById(R.id.ToolbarTitle);
+        textView.setText("Изменение поста");
 
         intent = getIntent();
-        post = (Post) intent.getSerializableExtra("OnePost");
+        post = (Post) intent.getSerializableExtra("ChangePost");
 
-        TextView textView = findViewById(R.id.ToolbarTitle);
-        textView.setText(post.title);
-        TextView textView1 = findViewById(R.id.PostText);
-        textView1.setText(post.text);
+        textView1 = findViewById(R.id.PostTitle1);
+        textView1.setText(post.title);
+        textView2 = findViewById(R.id.PostText1);
+        textView2.setText(post.text);
 
         Toolbar toolbar = findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
@@ -45,15 +47,13 @@ public class OnePostActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void DeleteClick(View view) {
-        intent = new Intent(this, MainActivity.class);
-        intent.putExtra("delete", post);
-        startActivity(intent);
-    }
-
-    public void ChangeClick(View view) {
-        intent = new Intent(this, CangePostActivity.class);
-        intent.putExtra("ChangePost", post);
+    public void ChangePost(View view) {
+        if (!textView1.getText().toString().isEmpty() && !textView2.getText().toString().isEmpty()) {
+            post.title = textView1.getText().toString();
+            post.text = textView2.getText().toString();
+        }
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("update", post);
         startActivity(intent);
     }
 }
