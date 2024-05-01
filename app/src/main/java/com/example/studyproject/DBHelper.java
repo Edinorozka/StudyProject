@@ -9,26 +9,71 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import java.io.Serializable;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class DBHelper extends SQLiteOpenHelper {
+    private static final String USER = "user";
+    private static final String USERNAME = "username";
+    private static final String PASSWORD = "password";
     private static final String POSTS = "posts";
     private static final String ID = "_id";
     private static final String TITLE = "title";
     private static final String TEXT = "text";
+    private static final String AUTHOR = "author";
 
     public DBHelper(@Nullable Context context) {
-        super(context, "StudyProject.db", null, 1);
+        super(context, "StudyProject.db", null, 2);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE if not exists " + POSTS + " (" + ID + " text primary key, " + TITLE + " text, " + TEXT + " text);");
+        db.execSQL("Create table if not exists " + USER + " (" + USERNAME + " text primary key," + PASSWORD + " text);");
+        db.execSQL("CREATE TABLE if not exists " + POSTS + " (" + ID + " text primary key, " + TITLE + " text, " + TEXT + " text," + AUTHOR + " text references " + USER + "(" + USERNAME + "));");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    }
+
+    public void addUser(User user){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put(USERNAME, user.username);
+        cv.put(PASSWORD, user.password);
+        db.insert(USER, null, cv);
+
+        db.close();
+    }
+
+    public boolean FindUser(User user) throws NoSuchAlgorithmException {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor;
+        if (user != null){
+            cursor = db.rawQuery("select * from " + USER + " where " + USERNAME + " =  ?", new String[]{user.username});
+            cursor.moveToFirst();
+            int id_username = cursor.getColumnIndex(USERNAME);
+            int id_password = cursor.getColumnIndex(PASSWORD);
+
+            User findUser = new User(cursor.getString(id_username), cursor.getString(id_password));
+            System.out.println(findUser.username = " " + findUser.password);
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            byte[] bytes = md5.digest(user.password.getBytes());
+            StringBuilder builder = new StringBuilder();
+            for (byte b: bytes){
+                builder.append(String.format("%02X", b));
+            }
+            if (Objects.equals(findUser.password, builder.toString())){
+                db.close();
+                return true;
+            }
+        }
+        db.close();
+        return false;
     }
 
     public void addPost(Post post){
@@ -54,8 +99,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 int id_id = cursor.getColumnIndex(ID);
                 int id_title = cursor.getColumnIndex(TITLE);
                 int id_text = cursor.getColumnIndex(TEXT);
+                int id_author = cursor.getColumnIndex(AUTHOR);
 
-                Post post = new Post(cursor.getString(id_id), cursor.getString(id_title), cursor.getString(id_text));
+                Post post = new Post(cursor.getString(id_id), cursor.getString(id_title), cursor.getString(id_text), cursor.getString(id_author));
                 list.add(post);
 
             } while (cursor.moveToNext());
@@ -85,6 +131,32 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(TEXT , post.text);
         db.update(POSTS, cv, ID + "='" + post.id + "'", null);
         db.close();
+    }
+
+    public LinkedList<Post> FindPosts(String string){
+        LinkedList<Post> list = new LinkedList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor;
+        if (!string.isEmpty()){
+            cursor = db.rawQuery("select * from " + POSTS + " where " + TITLE + " like ?", new String[]{"%" + string + "%"});
+        } else {
+            cursor = db.rawQuery("select * from " + POSTS, null);
+        }
+
+        if (cursor.moveToFirst()){
+            do {
+                int id_id = cursor.getColumnIndex(ID);
+                int id_title = cursor.getColumnIndex(TITLE);
+                int id_text = cursor.getColumnIndex(TEXT);
+                int id_author = cursor.getColumnIndex(AUTHOR);
+
+                Post post = new Post(cursor.getString(id_id), cursor.getString(id_title), cursor.getString(id_text), cursor.getString(id_author));
+                list.add(post);
+
+            } while (cursor.moveToNext());
+        }
+        db.close();
+        return list;
     }
 
 }

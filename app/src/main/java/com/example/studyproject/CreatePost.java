@@ -20,10 +20,15 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 public class CreatePost extends AppCompatActivity {
+    String username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_post);
+
+        Intent intent = getIntent();
+        username = (String) intent.getSerializableExtra("login");
+
         TextView textView = findViewById(R.id.ToolbarTitle);
         textView.setText("Создание поста");
 
@@ -45,7 +50,7 @@ public class CreatePost extends AppCompatActivity {
         EditText title = findViewById(R.id.PostTitle);
         EditText text = findViewById(R.id.PostText);
         if (!title.getText().toString().isEmpty() && !text.getText().toString().isEmpty()){
-            Post post = new Post(UUID.randomUUID().toString(), title.getText().toString(), text.getText().toString());
+            Post post = new Post(UUID.randomUUID().toString(), title.getText().toString(), text.getText().toString(), username);
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("post", post);
             startActivity(intent);
