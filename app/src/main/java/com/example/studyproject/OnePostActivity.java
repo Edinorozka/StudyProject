@@ -14,6 +14,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.studyproject.pattern.Button;
+import com.example.studyproject.pattern.Factory;
+
 public class OnePostActivity extends AppCompatActivity {
 
     Intent intent;
@@ -31,6 +34,8 @@ public class OnePostActivity extends AppCompatActivity {
         textView.setText(post.title);
         TextView textView1 = findViewById(R.id.PostText);
         textView1.setText(post.text);
+        TextView textView2 = findViewById(R.id.authorTextView);
+        textView2.setText(post.author);
 
         Toolbar toolbar = findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
@@ -46,14 +51,14 @@ public class OnePostActivity extends AppCompatActivity {
     }
 
     public void DeleteClick(View view) {
-        intent = new Intent(this, MainActivity.class);
-        intent.putExtra("delete", post);
-        startActivity(intent);
+        Factory f = new Factory();
+        Button button = f.getCurrentButton("DeleteButton");
+        button.onClick(view, this, post);
     }
 
     public void ChangeClick(View view) {
-        intent = new Intent(this, CangePostActivity.class);
-        intent.putExtra("ChangePost", post);
-        startActivity(intent);
+        Factory f = new Factory();
+        Button button = f.getCurrentButton("ComeInChangeButton");
+        button.onClick(view, this, post);
     }
 }

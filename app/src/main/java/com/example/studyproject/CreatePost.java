@@ -2,6 +2,8 @@ package com.example.studyproject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -15,19 +17,25 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.studyproject.pattern.Button;
+import com.example.studyproject.pattern.Factory;
+
 import org.jetbrains.annotations.NotNull;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 public class CreatePost extends AppCompatActivity {
-    String username;
+    private String username;
+    private Post post;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_post);
 
         Intent intent = getIntent();
-        username = (String) intent.getSerializableExtra("login");
+        username = (String) intent.getSerializableExtra("username");
 
         TextView textView = findViewById(R.id.ToolbarTitle);
         textView.setText("Создание поста");
@@ -37,6 +45,46 @@ public class CreatePost extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        EditText title = findViewById(R.id.PostTitle);
+        EditText text = findViewById(R.id.PostText);
+
+        title.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(!title.getText().toString().isEmpty() && !text.getText().toString().isEmpty()){
+                    post = new Post(UUID.randomUUID().toString(), title.getText().toString(), text.getText().toString(), username);
+                }
+            }
+        });
+        text.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(!title.getText().toString().isEmpty() && !text.getText().toString().isEmpty()){
+                    post = new Post(UUID.randomUUID().toString(), title.getText().toString(), text.getText().toString(), username);
+                }
+            }
+        });
     }
 
 
@@ -50,10 +98,9 @@ public class CreatePost extends AppCompatActivity {
         EditText title = findViewById(R.id.PostTitle);
         EditText text = findViewById(R.id.PostText);
         if (!title.getText().toString().isEmpty() && !text.getText().toString().isEmpty()){
-            Post post = new Post(UUID.randomUUID().toString(), title.getText().toString(), text.getText().toString(), username);
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("post", post);
-            startActivity(intent);
+            Factory f = new Factory();
+            Button button = f.getCurrentButton("AddPostButton");
+            button.onClick(view, this, post);
         }
     }
 }

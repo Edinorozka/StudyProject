@@ -5,7 +5,8 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    String username, password;
+    public String username;
+    String password;
 
     @NonNull
     @Override

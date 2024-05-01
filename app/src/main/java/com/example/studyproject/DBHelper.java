@@ -55,21 +55,17 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor;
         if (user != null){
             cursor = db.rawQuery("select * from " + USER + " where " + USERNAME + " =  ?", new String[]{user.username});
-            cursor.moveToFirst();
-            int id_username = cursor.getColumnIndex(USERNAME);
-            int id_password = cursor.getColumnIndex(PASSWORD);
-
-            User findUser = new User(cursor.getString(id_username), cursor.getString(id_password));
-            System.out.println(findUser.username = " " + findUser.password);
-            MessageDigest md5 = MessageDigest.getInstance("MD5");
-            byte[] bytes = md5.digest(user.password.getBytes());
-            StringBuilder builder = new StringBuilder();
-            for (byte b: bytes){
-                builder.append(String.format("%02X", b));
-            }
-            if (Objects.equals(findUser.password, builder.toString())){
-                db.close();
-                return true;
+            if(cursor != null){
+                if(cursor.moveToFirst()) {
+                    cursor.moveToFirst();
+                    int id_username = cursor.getColumnIndex(USERNAME);
+                    int id_password = cursor.getColumnIndex(PASSWORD);
+                    User findUser = new User(cursor.getString(id_username), cursor.getString(id_password));
+                    if (Objects.equals(findUser.password, user.password)) {
+                        db.close();
+                        return true;
+                    }
+                }
             }
         }
         db.close();
@@ -83,6 +79,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(ID, post.id);
         cv.put(TITLE, post.title);
         cv.put(TEXT, post.text);
+        cv.put(AUTHOR, post.author);
         db.insert(POSTS, null, cv);
 
         db.close();

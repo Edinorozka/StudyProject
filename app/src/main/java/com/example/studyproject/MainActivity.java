@@ -9,54 +9,45 @@ import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.security.NoSuchAlgorithmException;
+import com.example.studyproject.pattern.Button;
+import com.example.studyproject.pattern.Factory;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    private static DBHelper dbHelper;
+    private ArrayList<Post> countries = new ArrayList<>();
+    private static boolean auth = false;
+    private static User user;
 
-    DBHelper dbHelper;
-    Intent intent;
-    ArrayList<Post> countries = new ArrayList<>();
-    static boolean auth = false;
+    public static DBHelper getDbHelper() {
+        return dbHelper;
+    }
 
-    static User user;
+    public static boolean getAuth() {
+        return auth;
+    }
+
+    public static void setAuth(boolean auth) {
+        MainActivity.auth = auth;
+    }
+
+    public static void setUser(User user) {
+        MainActivity.user = user;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         dbHelper = new DBHelper(this);
-        intent = getIntent();
-        if(intent.hasExtra("login")){
-            user = (User) intent.getSerializableExtra("login");
-            try {
-                auth = dbHelper.FindUser(user);
-            } catch (NoSuchAlgorithmException e) {
-                System.out.println(e);
-            }
-        }
-        if(intent.hasExtra("user")) {
-            User user = (User) intent.getSerializableExtra("user");
-            if (user != null) dbHelper.addUser(user);
-        }
-        if(intent.hasExtra("post")){
-            Post post = (Post) intent.getSerializableExtra("post");
-            if (post != null) dbHelper.addPost(post);
-        }
-        if(intent.hasExtra("delete")){
-            Post post = (Post) intent.getSerializableExtra("delete");
-            if (post != null) dbHelper.DeleteOnePost(post);
-        }
-        if(intent.hasExtra("update")) {
-            Post post = (Post) intent.getSerializableExtra("update");
-            if (post != null) dbHelper.UpdateOnePost(post);
-        }
         if (auth) {
             dbHelper.getAllPosts();
             countries.addAll(dbHelper.getAllPosts());
             createList();
         } else {
-            intent = new Intent(this, AuthActivity.class);
+            Intent intent = new Intent(this, AuthActivity.class);
             startActivity(intent);
         }
 
@@ -93,15 +84,15 @@ public class MainActivity extends AppCompatActivity {
         countriesList.setAdapter(adapter);
         countriesList.setOnItemClickListener((adapterView, view, i, l) -> {
             Post p = countries.get(i);
-            intent = new Intent(this, OnePostActivity.class);
+            Intent intent = new Intent(this, OnePostActivity.class);
             intent.putExtra("OnePost", p);
             startActivity(intent);
         });
     }
 
     public void addNewPost(View view) {
-        intent = new Intent(this, CreatePost.class);
-        intent.putExtra("username", user.username);
-        startActivity(intent);
+        Factory f = new Factory();
+        Button button = f.getCurrentButton("AddNewPost");
+        button.onClick(view, this, user.username);
     }
 }

@@ -2,8 +2,11 @@ package com.example.studyproject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -13,6 +16,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.studyproject.pattern.Button;
+import com.example.studyproject.pattern.Factory;
+
+import java.util.UUID;
 
 public class CangePostActivity extends AppCompatActivity {
     Intent intent;
@@ -39,6 +47,44 @@ public class CangePostActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        textView1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(!textView1.getText().toString().isEmpty() && !textView2.getText().toString().isEmpty()){
+                    post.title = textView1.getText().toString();
+                    post.text = textView2.getText().toString();
+                }
+            }
+        });
+        textView2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(!textView1.getText().toString().isEmpty() && !textView2.getText().toString().isEmpty()){
+                    post.title = textView1.getText().toString();
+                    post.text = textView2.getText().toString();
+                }
+            }
+        });
     }
 
     @Override
@@ -49,11 +95,9 @@ public class CangePostActivity extends AppCompatActivity {
 
     public void ChangePost(View view) {
         if (!textView1.getText().toString().isEmpty() && !textView2.getText().toString().isEmpty()) {
-            post.title = textView1.getText().toString();
-            post.text = textView2.getText().toString();
+            Factory f = new Factory();
+            Button button = f.getCurrentButton("ChangeButton");
+            button.onClick(view, this, post);
         }
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("update", post);
-        startActivity(intent);
     }
 }
