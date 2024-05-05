@@ -16,15 +16,19 @@ public class LoginButton implements Button {
         User user = (User) object;
         Intent intent = new Intent(context, MainActivity.class);
         try {
-            System.out.println(MainActivity.getAuth());
             MainActivity.setAuth(MainActivity.getDbHelper().FindUser(user));
-            System.out.println(MainActivity.getAuth());
             if (MainActivity.getAuth()){
                 MainActivity.setUser(user);
+                context.startActivity(intent);
             }
         } catch (NoSuchAlgorithmException e) {
             System.out.println(e);
         }
-        context.startActivity(intent);
+
+    }
+
+    @Override
+    public String getButtonType() {
+        return "LoginButton";
     }
 }

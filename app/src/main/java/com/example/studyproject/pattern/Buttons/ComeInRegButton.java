@@ -14,4 +14,9 @@ public class ComeInRegButton implements Button {
         Intent intent = new Intent(context, RegActivity.class);
         context.startActivity(intent);
     }
+
+    @Override
+    public String getButtonType() {
+        return "ComeInRegButton";
+    }
 }

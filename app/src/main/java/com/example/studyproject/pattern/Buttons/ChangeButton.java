@@ -15,4 +15,9 @@ public class ChangeButton implements Button {
         Intent intent = new Intent(context, MainActivity.class);
         context.startActivity(intent);
     }
+
+    @Override
+    public String getButtonType() {
+        return "ChangeButton";
+    }
 }

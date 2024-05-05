@@ -15,6 +15,37 @@ import java.security.NoSuchAlgorithmException;
 public class RegActivity extends AppCompatActivity {
 
     private User user;
+    private EditText login, password;
+    private final TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            EditText password = findViewById(R.id.Password);
+            if(!login.getText().toString().isEmpty() && !password.getText().toString().isEmpty()){
+                MessageDigest md5;
+                try {
+                    md5 = MessageDigest.getInstance("MD5");
+                } catch (NoSuchAlgorithmException e) {
+                    throw new RuntimeException(e);
+                }
+                byte[] bytes = md5.digest(password.getText().toString().getBytes());
+                StringBuilder builder = new StringBuilder();
+                for (byte b: bytes){
+                    builder.append(String.format("%02X", b));
+                }
+                user = new User(login.getText().toString(), builder.toString());
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,70 +55,14 @@ public class RegActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.ToolbarTitle);
         textView.setText("Регистрация");
 
-        EditText login = findViewById(R.id.Login);
-        login.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        login = findViewById(R.id.Login);
+        password = findViewById(R.id.Password);
+        login.addTextChangedListener(textWatcher);
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                EditText password = findViewById(R.id.Password);
-                if(!login.getText().toString().isEmpty() && !password.getText().toString().isEmpty()){
-                    MessageDigest md5 = null;
-                    try {
-                        md5 = MessageDigest.getInstance("MD5");
-                    } catch (NoSuchAlgorithmException e) {
-                        throw new RuntimeException(e);
-                    }
-                    byte[] bytes = md5.digest(password.getText().toString().getBytes());
-                    StringBuilder builder = new StringBuilder();
-                    for (byte b: bytes){
-                        builder.append(String.format("%02X", b));
-                    }
-                    user = new User(login.getText().toString(), builder.toString());
-                }
-            }
-        });
-        EditText password = findViewById(R.id.Password);
-        password.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if(!login.getText().toString().isEmpty() && !password.getText().toString().isEmpty()){
-                    MessageDigest md5 = null;
-                    try {
-                        md5 = MessageDigest.getInstance("MD5");
-                    } catch (NoSuchAlgorithmException e) {
-                        throw new RuntimeException(e);
-                    }
-                    byte[] bytes = md5.digest(password.getText().toString().getBytes());
-                    StringBuilder builder = new StringBuilder();
-                    for (byte b: bytes){
-                        builder.append(String.format("%02X", b));
-                    }
-                    user = new User(login.getText().toString(), builder.toString());
-                }
-            }
-        });
+        password.addTextChangedListener(textWatcher);
     }
 
-    public void ButtonReg(View view) throws NoSuchAlgorithmException {
+    public void ButtonReg(View view){
         EditText login = findViewById(R.id.Login);
         EditText password = findViewById(R.id.Password);
         if(!login.getText().toString().isEmpty() && !password.getText().toString().isEmpty()){

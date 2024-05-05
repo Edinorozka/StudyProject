@@ -38,7 +38,6 @@ public class Factory {
                 button = new ChangeButton();
                 break;
         }
-
         return button;
     }
 }

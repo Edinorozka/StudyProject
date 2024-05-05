@@ -15,4 +15,9 @@ public class AddNewPostButton implements Button {
         intent.putExtra("username", username);
         context.startActivity(intent);
     }
+
+    @Override
+    public String getButtonType() {
+        return "AddNewPostButton";
+    }
 }

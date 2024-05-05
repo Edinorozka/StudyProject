@@ -5,13 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
 import androidx.annotation.Nullable;
-
-import java.io.Serializable;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -111,6 +106,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void DeleteAll(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(POSTS, null, null);
+        db.delete(USER, null, null);
         db.close();
     }
 

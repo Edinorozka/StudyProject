@@ -14,4 +14,9 @@ public class DeleteButton implements Button {
         MainActivity.getDbHelper().DeleteOnePost((Post) object);
         context.startActivity(intent);
     }
+
+    @Override
+    public String getButtonType() {
+        return "DeleteButton";
+    }
 }

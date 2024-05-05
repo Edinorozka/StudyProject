@@ -14,4 +14,9 @@ public class ComeInChangeButton implements Button {
         intent.putExtra("ChangePost", (Post) object);
         context.startActivity(intent);
     }
+
+    @Override
+    public String getButtonType() {
+        return "ComeInChangeButton";
+    }
 }

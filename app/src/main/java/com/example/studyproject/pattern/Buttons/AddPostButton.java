@@ -14,4 +14,9 @@ public class AddPostButton implements Button {
         MainActivity.getDbHelper().addPost((Post) object);
         context.startActivity(intent);
     }
+
+    @Override
+    public String getButtonType() {
+        return "AddPostButton";
+    }
 }

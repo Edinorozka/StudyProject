@@ -16,9 +16,13 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private static DBHelper dbHelper;
-    private ArrayList<Post> countries = new ArrayList<>();
+    public ArrayList<Post> countries = new ArrayList<>();
     private static boolean auth = false;
     private static User user;
+
+    public static void setDbHelper(DBHelper dbHelper) {
+        MainActivity.dbHelper = dbHelper;
+    }
 
     public static DBHelper getDbHelper() {
         return dbHelper;
@@ -41,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        dbHelper = new DBHelper(this);
+        if (dbHelper == null) dbHelper = new DBHelper(this);
         if (auth) {
             dbHelper.getAllPosts();
             countries.addAll(dbHelper.getAllPosts());
@@ -50,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, AuthActivity.class);
             startActivity(intent);
         }
-
 
         SearchView searchView = findViewById(R.id.searchPosts);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

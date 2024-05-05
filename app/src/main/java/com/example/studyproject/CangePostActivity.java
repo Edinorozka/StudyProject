@@ -26,6 +26,25 @@ public class CangePostActivity extends AppCompatActivity {
     Intent intent;
     Post post;
     TextView textView1, textView2;
+    TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            if(!textView1.getText().toString().isEmpty() && !textView2.getText().toString().isEmpty()){
+                post.title = textView1.getText().toString();
+                post.text = textView2.getText().toString();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,44 +66,8 @@ public class CangePostActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        textView1.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if(!textView1.getText().toString().isEmpty() && !textView2.getText().toString().isEmpty()){
-                    post.title = textView1.getText().toString();
-                    post.text = textView2.getText().toString();
-                }
-            }
-        });
-        textView2.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if(!textView1.getText().toString().isEmpty() && !textView2.getText().toString().isEmpty()){
-                    post.title = textView1.getText().toString();
-                    post.text = textView2.getText().toString();
-                }
-            }
-        });
+        textView1.addTextChangedListener(textWatcher);
+        textView2.addTextChangedListener(textWatcher);
     }
 
     @Override
