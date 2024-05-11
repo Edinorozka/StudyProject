@@ -63,7 +63,7 @@ public class CreatePost extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 if(!title.getText().toString().isEmpty() && !text.getText().toString().isEmpty()){
-                    post = new Post(UUID.randomUUID().toString(), title.getText().toString(), text.getText().toString(), username);
+                    post = new Post(/*UUID.randomUUID().toString(), */title.getText().toString(), text.getText().toString(), username);
                 }
             }
         });
@@ -81,7 +81,7 @@ public class CreatePost extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 if(!title.getText().toString().isEmpty() && !text.getText().toString().isEmpty()){
-                    post = new Post(UUID.randomUUID().toString(), title.getText().toString(), text.getText().toString(), username);
+                    post = new Post(/*UUID.randomUUID().toString(), */title.getText().toString(), text.getText().toString(), username);
                 }
             }
         });

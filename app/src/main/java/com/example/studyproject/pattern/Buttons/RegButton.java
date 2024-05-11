@@ -14,7 +14,8 @@ public class RegButton implements Button {
     public void onClick(View view, Context context, Object object) {
         Intent intent = new Intent(context, AuthActivity.class);
         User user = (User) object;
-        MainActivity.getDbHelper().addUser(user);
+        //MainActivity.getDbHelper().addUser(user);
+        MainActivity.dbHelperORM.getUserDao().addUser(user);
         context.startActivity(intent);
     }
 

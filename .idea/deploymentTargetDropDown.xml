@@ -2,9 +2,6 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="ButtonClick()">
-        <State />
-      </entry>
       <entry key="CreateNewUserTest()">
         <State />
       </entry>

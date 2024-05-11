@@ -93,7 +93,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 int id_text = cursor.getColumnIndex(TEXT);
                 int id_author = cursor.getColumnIndex(AUTHOR);
 
-                Post post = new Post(cursor.getString(id_id), cursor.getString(id_title), cursor.getString(id_text), cursor.getString(id_author));
+                Post post = new Post(/*cursor.getString(id_id), */cursor.getString(id_title), cursor.getString(id_text), cursor.getString(id_author));
                 list.add(post);
 
             } while (cursor.moveToNext());
@@ -143,7 +143,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 int id_text = cursor.getColumnIndex(TEXT);
                 int id_author = cursor.getColumnIndex(AUTHOR);
 
-                Post post = new Post(cursor.getString(id_id), cursor.getString(id_title), cursor.getString(id_text), cursor.getString(id_author));
+                Post post = new Post(/*cursor.getString(id_id), */cursor.getString(id_title), cursor.getString(id_text), cursor.getString(id_author));
                 list.add(post);
 
             } while (cursor.moveToNext());

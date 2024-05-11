@@ -9,20 +9,22 @@ import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.studyproject.ORMDB.DBHelperORM;
 import com.example.studyproject.pattern.Button;
 import com.example.studyproject.pattern.Factory;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private static DBHelper dbHelper;
+
+    public static DBHelperORM dbHelperORM;
+
     public ArrayList<Post> countries = new ArrayList<>();
     private static boolean auth = false;
     private static User user;
-
-    public static void setDbHelper(DBHelper dbHelper) {
-        MainActivity.dbHelper = dbHelper;
-    }
 
     public static DBHelper getDbHelper() {
         return dbHelper;
@@ -40,15 +42,20 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.user = user;
     }
 
+    public static User getUser() {
+        return user;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (dbHelper == null) dbHelper = new DBHelper(this);
+        if (dbHelperORM == null) dbHelperORM = OpenHelperManager.getHelper(this, DBHelperORM.class);
         if (auth) {
-            dbHelper.getAllPosts();
-            countries.addAll(dbHelper.getAllPosts());
+            dbHelperORM.getPostDao().addPost(new Post("post", "post", user.username));
+            countries.addAll(dbHelperORM.getPostDao().getAllPosts());
+            /*dbHelper.getAllPosts();
+            countries.addAll(dbHelper.getAllPosts());*/
             createList();
         } else {
             Intent intent = new Intent(this, AuthActivity.class);
